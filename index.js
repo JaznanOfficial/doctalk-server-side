@@ -26,13 +26,34 @@ async function run() {
 
         // get methods--------------------->
 
-        app.get('/api/services', async (req, res) => { 
+        app.get('/api/services', async (req, res) => {
             const query = {};
             const cursor = servicesData.find(query);
             const services = await cursor.toArray();
             res.send(services);
             
         });
+
+        app.get('/doctors', async (req, res) => {
+            // const params = req.params.category;
+            const query = {};
+            const cursor = doctorsData.find(query);
+            const doctors = await cursor.toArray();
+            res.send(doctors);
+            
+        });
+        app.get('/doctors/:category', async (req, res) => {
+            const params = req.params.category;
+            const query = { specialized: params };
+            
+            const cursor = doctorsData.find(query);
+            const doctors = await cursor.toArray();
+            res.send(doctors);
+            console.log(doctors);
+            
+        }
+        );
+
                 // get all services
         
         // get methods--------------------->
@@ -45,7 +66,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("Welcome to docTalk server");
 });
 
 app.listen(port, () => {
