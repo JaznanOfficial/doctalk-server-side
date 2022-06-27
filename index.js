@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 const cors = require("cors");
+const ObjectId = require("mongodb").ObjectId;
 
 app.use(cors());
 app.use(express.json());
@@ -51,10 +52,21 @@ async function run() {
             res.send(doctors);
             console.log(doctors);
             
-        }
-        );
+        })
+        app.get('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id) };
+            
+            const cursor = await doctorsData.findOne(query);
+            
+            res.send(cursor);
+            console.log(cursor);
+            
+        });
+        
 
-                // get all services
+            // get all services
         
         // get methods--------------------->
 
