@@ -52,11 +52,21 @@ async function run() {
         });
         app.get("/booking/:id", async (req, res) => {
             const id = req.params.id;
-            const query = { uid: id };
-            const cursor = await bookingData.findOne(query);
+            const query = { _id: ObjectId(id)};
+            console.log(query);
+            const cursor = await doctorsData.findOne(query);
 
             res.send(cursor);
-            // console.log(cursor);
+            console.log(cursor);
+        });
+        app.get("/bookings", async (req, res) => {
+            // const id = req.params.id;
+            const query = {};
+            const cursor = bookingData.find(query);
+            const bookings = await cursor.toArray();
+
+            res.send(bookings);
+            console.log(bookings);
         });
 
         // get methods--------------------->
@@ -85,24 +95,25 @@ async function run() {
         //     // people from directly manipulating the amount on the client
         //     return +calculation;
         // };
-        // app.post("/create-payment-intent", async (req, res) => {
-        //     const items = req.body;
-        //     const amount = +items.fees * 100;
-        //     // console.log(typeof amount);
-        //     const calculate = parseInt(amount);
-        //     // Create a PaymentIntent with the order amount and currency
-        //     const paymentIntent = await stripe.paymentIntents.create({
-        //         amount: 1200,
-        //         currency: "usd",
-        //         automatic_payment_methods: {
-        //             enabled: true,
-        //         },
-        //     });
+        app.post("/create-payment-intent", async (req, res) => {
+            const items = req.body;
+            const amount = +items.fees * 100;
+            // console.log(typeof amount);
+            const calculate = parseInt(amount);
+            // Create a PaymentIntent with the order amount and currency
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: 1200,
+                currency: "usd",
+                automatic_payment_methods: {
+                    enabled: true,
+                },
+            });
 
-        //     res.send({
-        //         clientSecret: paymentIntent.client_secret,
-        //     });
-        // });
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+            });
+            console.log(clientSecret);
+        });
 
         // payment methods--------------------->
 
