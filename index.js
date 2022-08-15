@@ -52,7 +52,18 @@ async function run() {
         });
         app.get("/booking/:id", async (req, res) => {
             const id = req.params.id;
+            console.log(id);
             const query = { _id: ObjectId(id)};
+            console.log(query);
+            const cursor = await doctorsData.findOne(query);
+
+            res.send(cursor);
+            console.log(cursor);
+        });
+        app.get("/payment/:id", async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = {id};
             console.log(query);
             const cursor = await doctorsData.findOne(query);
 
@@ -97,9 +108,9 @@ async function run() {
         // };
         app.post("/create-payment-intent", async (req, res) => {
             const items = req.body;
-            const amount = +items.fees * 100;
+            // const amount = +items.fees * 100;
             // console.log(typeof amount);
-            const calculate = parseInt(amount);
+            // const calculate = parseInt(amount);
             // Create a PaymentIntent with the order amount and currency
             const paymentIntent = await stripe.paymentIntents.create({
                 amount: 1200,
@@ -108,11 +119,11 @@ async function run() {
                     enabled: true,
                 },
             });
-
-            res.send({
-                clientSecret: paymentIntent.client_secret,
-            });
-            console.log(clientSecret);
+            console.log(paymentIntent);
+            // res.send({
+                // clientSecret: paymentIntent.client_secret,
+            // });
+            // console.log(clientSecret);
         });
 
         // payment methods--------------------->
@@ -132,7 +143,7 @@ async function run() {
             };
             const bookingResult = await bookingData.updateOne(query, updateStatus, options);
             res.send(bookingResult);
-            console.log(bookingResult);
+            // console.log(bookingResult);
         });
 
         // put methods--------------------->
