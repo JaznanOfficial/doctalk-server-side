@@ -22,8 +22,8 @@ async function run() {
         const database = client.db("DocTalk-Server");
         const servicesData = database.collection("servicesData");
         const doctorsData = database.collection("doctors-data");
-        const patientsData = database.collection("patients-data");
         const bookingData = database.collection("booking-data");
+        const userData = database.collection("user-data");
         // database and collections information
 
         // get methods--------------------->
@@ -53,7 +53,7 @@ async function run() {
         app.get("/booking/:id", async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = { _id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             console.log(query);
             const cursor = await doctorsData.findOne(query);
 
@@ -63,7 +63,7 @@ async function run() {
         app.get("/payment/:id", async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = {uid:id};
+            const query = { uid: id };
             console.log(query);
             const cursor = await bookingData.findOne(query);
 
@@ -71,9 +71,6 @@ async function run() {
             console.log(cursor);
         });
         app.get("/bookings", async (req, res) => {
-            const id = req.params.id;
-            // console.log(id);
-            // console.log(req);
             console.log(req.query);
             const query = req.query;
             const cursor = bookingData.find(query);
@@ -81,6 +78,16 @@ async function run() {
 
             res.send(bookings);
             console.log(bookings);
+        });
+        app.get("/api/users/:email", async (req, res) => {
+            console.log(req.params.email);
+            const email = req.params.email;
+            const query = {email: email};
+            const cursor = await userData.findOne(query);
+            // const user = await cursor.toArray();
+
+            res.send(cursor);
+            console.log(cursor);
         });
 
         // get methods--------------------->
@@ -147,6 +154,28 @@ async function run() {
             const bookingResult = await bookingData.updateOne(query, updateStatus, options);
             res.send(bookingResult);
             // console.log(bookingResult);
+        });
+        app.put("/api/users", async (req, res) => {
+            const data = req.body;
+            console.log(data);
+            const { name, email, phone, address, blood, gender } = data;
+            const query = { email: email };
+            console.log(query);
+            const options = { upsert: true };
+
+            const updateStatus = {
+                $set: {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    address: address,
+                    blood: blood,
+                    gender: gender,
+                },
+            };
+            const userResult = await userData.updateOne(query, updateStatus, options);
+            res.send(userData);
+            console.log(userResult);
         });
 
         // put methods--------------------->
