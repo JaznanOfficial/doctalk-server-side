@@ -63,9 +63,9 @@ async function run() {
         app.get("/payment/:id", async (req, res) => {
             const id = req.params.id;
             console.log(id);
-            const query = {id};
+            const query = {uid:id};
             console.log(query);
-            const cursor = await doctorsData.findOne(query);
+            const cursor = await bookingData.findOne(query);
 
             res.send(cursor);
             console.log(cursor);
@@ -106,25 +106,25 @@ async function run() {
         //     // people from directly manipulating the amount on the client
         //     return +calculation;
         // };
-        app.post("/create-payment-intent", async (req, res) => {
-            const items = req.body;
+        // app.post("/create-payment-intent", async (req, res) => {
+            // const items = req.body;
             // const amount = +items.fees * 100;
             // console.log(typeof amount);
             // const calculate = parseInt(amount);
             // Create a PaymentIntent with the order amount and currency
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: 1200,
-                currency: "usd",
-                automatic_payment_methods: {
-                    enabled: true,
-                },
-            });
-            console.log(paymentIntent);
+            // const paymentIntent = await stripe.paymentIntents.create({
+                // amount: 1200,
+                // currency: "usd",
+                // automatic_payment_methods: {
+                    // enabled: true,
+                // },
+            // });
+            // console.log(paymentIntent);
             // res.send({
                 // clientSecret: paymentIntent.client_secret,
             // });
             // console.log(clientSecret);
-        });
+        // });
 
         // payment methods--------------------->
 
