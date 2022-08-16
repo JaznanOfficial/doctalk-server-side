@@ -71,8 +71,11 @@ async function run() {
             console.log(cursor);
         });
         app.get("/bookings", async (req, res) => {
-            // const id = req.params.id;
-            const query = {};
+            const id = req.params.id;
+            // console.log(id);
+            // console.log(req);
+            console.log(req.query);
+            const query = req.query;
             const cursor = bookingData.find(query);
             const bookings = await cursor.toArray();
 
@@ -106,25 +109,25 @@ async function run() {
         //     // people from directly manipulating the amount on the client
         //     return +calculation;
         // };
-        // app.post("/create-payment-intent", async (req, res) => {
-            // const items = req.body;
-            // const amount = +items.fees * 100;
-            // console.log(typeof amount);
-            // const calculate = parseInt(amount);
+        app.post("/create-payment-intent", async (req, res) => {
+            const items = req.body;
+            const amount = +items.fees * 100;
+            console.log(typeof amount);
+            const calculate = Number(amount);
             // Create a PaymentIntent with the order amount and currency
-            // const paymentIntent = await stripe.paymentIntents.create({
-                // amount: 1200,
-                // currency: "usd",
-                // automatic_payment_methods: {
-                    // enabled: true,
-                // },
-            // });
-            // console.log(paymentIntent);
-            // res.send({
-                // clientSecret: paymentIntent.client_secret,
-            // });
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: 1200,
+                currency: "usd",
+                automatic_payment_methods: {
+                    enabled: true,
+                },
+            });
+            console.log(paymentIntent);
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+            });
             // console.log(clientSecret);
-        // });
+        });
 
         // payment methods--------------------->
 
