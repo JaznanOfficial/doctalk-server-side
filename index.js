@@ -146,12 +146,12 @@ async function run() {
             const query = { uid: data.uid };
             console.log(query);
             const options = { upsert: true };
-            const updateStatus = {
+            const updateData = {
                 $set: {
                     status: "paid",
                 },
             };
-            const bookingResult = await bookingData.updateOne(query, updateStatus, options);
+            const bookingResult = await bookingData.updateOne(query, updateData, options);
             res.send(bookingResult);
             // console.log(bookingResult);
         });
@@ -163,7 +163,7 @@ async function run() {
             console.log(query);
             const options = { upsert: true };
 
-            const updateStatus = {
+            const updateData = {
                 $set: {
                     name: name,
                     email: email,
@@ -173,8 +173,8 @@ async function run() {
                     gender: gender,
                 },
             };
-            const userResult = await userData.updateOne(query, updateStatus, options);
-            res.send(userData);
+            const userResult = await userData.updateOne(query, updateData, options);
+            res.send(userResult);
             console.log(userResult);
         });
 
